@@ -4,6 +4,14 @@ package  'Network Design Library' {
         type = "Library";
     } 
     @CapellaID { eid = "a33471dc-8b4d-4373-8f25-b48490e205ca"; } 
+    enum def 'ProgressStatus' :> EnumerationPropertyType  { 
+        enum 'DRAFT'; 
+        enum 'TO_BE_REVIEWED'; 
+        enum 'TO_BE_DISCUSSED'; 
+        enum 'REWORK_NECESSARY'; 
+        enum 'UNDER_REWORK'; 
+        enum 'REVIEWED_OK'; 
+    }  
     package  'Network Design' {
         @PackageMeta {
             type = "SystemEngineering";
@@ -24,12 +32,6 @@ package  'Network Design Library' {
                 type = "OperationalAnalysis";
             } 
             @CapellaID { eid = "731d5757-04d6-4390-b6a7-ef791bab09d3"; } 
-            package  'Roles' {
-                @PackageMeta {
-                    type = "RolePkg";
-                } 
-                @CapellaID { eid = "ab3bdbae-fca4-4256-ba9c-aa7bf613cdb4"; } 
-            } 
             package  'Interfaces' {
                 @PackageMeta {
                     type = "InterfacePkg";
@@ -47,6 +49,18 @@ package  'Network Design Library' {
                     type = "OperationalCapabilityPkg";
                 } 
                 @CapellaID { eid = "40c0465d-d4ab-404f-8ac1-8e05230ecc53"; } 
+            } 
+            package  'Operational Entities' {
+                @PackageMeta {
+                    type = "EntityPkg";
+                } 
+                @CapellaID { eid = "c7d443aa-5cc1-42aa-a475-c128ef41deb2"; } 
+            } 
+            package  'Roles' {
+                @PackageMeta {
+                    type = "RolePkg";
+                } 
+                @CapellaID { eid = "ab3bdbae-fca4-4256-ba9c-aa7bf613cdb4"; } 
             } 
             package  'Operational Activities' {
                 @PackageMeta {
@@ -69,18 +83,36 @@ package  'Network Design Library' {
                     attribute :>> isUnique = false; 
                 }  
             } 
-            package  'Operational Entities' {
-                @PackageMeta {
-                    type = "EntityPkg";
-                } 
-                @CapellaID { eid = "c7d443aa-5cc1-42aa-a475-c128ef41deb2"; } 
-            } 
         } 
         package  'System Analysis' {
             @PackageMeta {
                 type = "SystemAnalysis";
             } 
             @CapellaID { eid = "5d707d04-11fa-4b4d-add4-4602d1cacd8f"; } 
+            package  'Missions' {
+                @PackageMeta {
+                    type = "MissionPkg";
+                } 
+                @CapellaID { eid = "fc188a4d-a29c-495e-8bd9-a22dcbdf601c"; } 
+            } 
+            package  'Structure' {
+                @PackageMeta {
+                    type = "SystemComponentPkg";
+                } 
+                @CapellaID { eid = "2e0f1c5d-91f5-4a21-a518-290a0649b709"; } 
+                part 'System' : SystemComponent { 
+                    @CapellaID { eid = "2a5fc8a3-2d15-4c82-a418-9355b9958077"; } 
+                    attribute :>> isAbstract = false; 
+                    attribute :>> isActor = false; 
+                    attribute :>> isDataComponent = false; 
+                    attribute :>> isHuman = false; 
+                    state 'System State Machine' : StateMachine  { 
+                        @CapellaID { eid = "a740c61c-00a3-442b-8735-a65f4b59da52"; } 
+                        attribute :>> isControlOperator = false; 
+                    }  
+                    ref :>> ownedStateMachines =  ('Network Design Library'::'Network Design'::'System Analysis'::'Structure'::'System'.'System State Machine'); 
+                }  
+            } 
             package  'Interfaces' {
                 @PackageMeta {
                     type = "InterfacePkg";
@@ -127,36 +159,25 @@ package  'Network Design Library' {
                      
                 }  
             } 
-            package  'Missions' {
-                @PackageMeta {
-                    type = "MissionPkg";
-                } 
-                @CapellaID { eid = "fc188a4d-a29c-495e-8bd9-a22dcbdf601c"; } 
-            } 
-            package  'Structure' {
-                @PackageMeta {
-                    type = "SystemComponentPkg";
-                } 
-                @CapellaID { eid = "2e0f1c5d-91f5-4a21-a518-290a0649b709"; } 
-                part 'System' : SystemComponent { 
-                    @CapellaID { eid = "2a5fc8a3-2d15-4c82-a418-9355b9958077"; } 
-                    attribute :>> isAbstract = false; 
-                    attribute :>> isActor = false; 
-                    attribute :>> isDataComponent = false; 
-                    attribute :>> isHuman = false; 
-                    state 'System State Machine' : StateMachine  { 
-                        @CapellaID { eid = "a740c61c-00a3-442b-8735-a65f4b59da52"; } 
-                        attribute :>> isControlOperator = false; 
-                    }  
-                    ref :>> ownedStateMachines =  ('Network Design Library'::'Network Design'::'System Analysis'::'Structure'::'System'.'System State Machine'); 
-                }  
-            } 
         } 
         package  'Logical Architecture' {
             @PackageMeta {
                 type = "LogicalArchitecture";
             } 
             @CapellaID { eid = "fc558351-2668-46ed-9104-f4b3eded8155"; } 
+            package  'Structure' {
+                @PackageMeta {
+                    type = "LogicalComponentPkg";
+                } 
+                @CapellaID { eid = "df29572d-0fdf-4885-8b38-5cf93ea77200"; } 
+                part 'Logical System' : LogicalComponent { 
+                    @CapellaID { eid = "0854dcb0-09f0-4ca4-a50b-cf165ec19fe1"; } 
+                    attribute :>> isAbstract = false; 
+                    attribute :>> isActor = false; 
+                    attribute :>> isHuman = false; 
+                     
+                }  
+            } 
             package  'Interfaces' {
                 @PackageMeta {
                     type = "InterfacePkg";
@@ -306,8 +327,8 @@ package  'Network Design Library' {
                             'Network Design Library'::'Network Design'::'Logical Architecture'::'Data'::'Vehicle Speed'.'Vehicle Speed'.'Data Definition'.'Bitsize'); 
                         }  
                         ref :>> appliedPropertyValueGroups =  ('Network Design Library'::'Network Design'::'Logical Architecture'::'Data'::'Vehicle Speed'.'Vehicle Speed'.'Data Definition'); 
-                         
                         ref :>> ownedPropertyValueGroups =  ('Network Design Library'::'Network Design'::'Logical Architecture'::'Data'::'Vehicle Speed'.'Vehicle Speed'.'Data Definition'); 
+                         
                          
                         ref :>> abstractType = 'Network Design Library'::'Network Design'::'Logical Architecture'::'Data'::'CAN_Signal';
                     } 
@@ -348,19 +369,6 @@ package  'Network Design Library' {
                      
                 }  
             } 
-            package  'Structure' {
-                @PackageMeta {
-                    type = "LogicalComponentPkg";
-                } 
-                @CapellaID { eid = "df29572d-0fdf-4885-8b38-5cf93ea77200"; } 
-                part 'Logical System' : LogicalComponent { 
-                    @CapellaID { eid = "0854dcb0-09f0-4ca4-a50b-cf165ec19fe1"; } 
-                    attribute :>> isAbstract = false; 
-                    attribute :>> isActor = false; 
-                    attribute :>> isHuman = false; 
-                     
-                }  
-            } 
         } 
         package  'Physical Architecture' {
             @PackageMeta {
@@ -385,21 +393,6 @@ package  'Network Design Library' {
                 } 
                 @CapellaID { eid = "bf0bc7f5-62f7-4cdb-b3c4-39f69cdd7962"; } 
             } 
-            package  'Structure' {
-                @PackageMeta {
-                    type = "PhysicalComponentPkg";
-                } 
-                @CapellaID { eid = "c43a9497-8be6-4da3-ad08-8049316fcf67"; } 
-                part 'Physical System' : PhysicalComponent { 
-                    @CapellaID { eid = "be98c304-f43a-41f4-ae17-26d685bfb500"; } 
-                    attribute :>> isAbstract = false; 
-                    attribute :>> isActor = false; 
-                    attribute :>> isHuman = false; 
-                    attribute :>> kind = PhysicalComponentKind::UNSET; 
-                    attribute :>> nature = PhysicalComponentNature::UNSET; 
-                     
-                }  
-            } 
             package  'Physical Functions' {
                 @PackageMeta {
                     type = "PhysicalFunctionPkg";
@@ -422,14 +415,21 @@ package  'Network Design Library' {
                      
                 }  
             } 
+            package  'Structure' {
+                @PackageMeta {
+                    type = "PhysicalComponentPkg";
+                } 
+                @CapellaID { eid = "c43a9497-8be6-4da3-ad08-8049316fcf67"; } 
+                part 'Physical System' : PhysicalComponent { 
+                    @CapellaID { eid = "be98c304-f43a-41f4-ae17-26d685bfb500"; } 
+                    attribute :>> isAbstract = false; 
+                    attribute :>> isActor = false; 
+                    attribute :>> isHuman = false; 
+                    attribute :>> kind = PhysicalComponentKind::UNSET; 
+                    attribute :>> nature = PhysicalComponentNature::UNSET; 
+                     
+                }  
+            } 
         } 
     } 
-    enum def 'ProgressStatus' :> EnumerationPropertyType  { 
-        enum 'DRAFT'; 
-        enum 'TO_BE_REVIEWED'; 
-        enum 'TO_BE_DISCUSSED'; 
-        enum 'REWORK_NECESSARY'; 
-        enum 'UNDER_REWORK'; 
-        enum 'REVIEWED_OK'; 
-    }  
 }
